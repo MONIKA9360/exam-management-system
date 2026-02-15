@@ -1,0 +1,29 @@
+# Python
+backend/Exam_management/**/__pycache__/
+backend/Exam_management/**/*.pyc
+backend/Exam_management/**/*.pyo
+backend/Exam_management/**/*.pyd
+backend/Exam_management/.Python
+backend/Exam_management/env/
+backend/Exam_management/venv/
+backend/Exam_management/**/*.sqlite3
+backend/Exam_management/**/*.db
+
+# Node
+my-app/node_modules/
+my-app/build/
+my-app/.env
+my-app/npm-debug.log*
+my-app/yarn-debug.log*
+my-app/yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

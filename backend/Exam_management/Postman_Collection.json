@@ -1,0 +1,667 @@
+{
+  "info": {
+    "name": "Exam Management System API",
+    "description": "Complete API collection for Exam Management System with all 12 modules",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"admin_user\",\n    \"email\": \"admin@example.com\",\n    \"password\": \"Admin@123\",\n    \"role\": \"Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register", ""]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"Admin@123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/profile/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile", ""]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"updated_admin\",\n    \"email\": \"updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/profile/update/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile", "update", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dashboard/",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Departments",
+      "item": [
+        {
+          "name": "Create Department",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"department_name\": \"Computer Science\",\n    \"department_code\": \"CSE\",\n    \"hod\": \"Dr. Jane Smith\",\n    \"description\": \"Department of Computer Science and Engineering\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/departments/",
+              "host": ["{{base_url}}"],
+              "path": ["departments", ""]
+            }
+          }
+        },
+        {
+          "name": "Get All Departments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/departments/",
+              "host": ["{{base_url}}"],
+              "path": ["departments", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Single Department",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/departments/1/",
+              "host": ["{{base_url}}"],
+              "path": ["departments", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Update Department",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"hod\": \"Dr. John Updated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/departments/1/",
+              "host": ["{{base_url}}"],
+              "path": ["departments", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Delete Department",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/departments/1/",
+              "host": ["{{base_url}}"],
+              "path": ["departments", "1", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Staff",
+      "item": [
+        {
+          "name": "Create Staff",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"staff_id\": \"STAFF001\",\n    \"name\": \"Dr. Jane Smith\",\n    \"email\": \"jane.smith@example.com\",\n    \"phone\": \"9876543210\",\n    \"department\": 1,\n    \"designation\": \"Professor\",\n    \"qualification\": \"PhD in Computer Science\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/staff/",
+              "host": ["{{base_url}}"],
+              "path": ["staff", ""]
+            }
+          }
+        },
+        {
+          "name": "Get All Staff",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/",
+              "host": ["{{base_url}}"],
+              "path": ["staff", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Students",
+      "item": [
+        {
+          "name": "Create Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"student_id\": \"STU001\",\n    \"full_name\": \"John Doe\",\n    \"register_no\": \"REG2024001\",\n    \"department\": 1,\n    \"year\": 2,\n    \"semester\": 3,\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"9876543210\",\n    \"address\": \"123 Main Street, City\",\n    \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/students/",
+              "host": ["{{base_url}}"],
+              "path": ["students", ""]
+            }
+          }
+        },
+        {
+          "name": "Get All Students",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/students/?page=1",
+              "host": ["{{base_url}}"],
+              "path": ["students", ""],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Courses",
+      "item": [
+        {
+          "name": "Create Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"course_code\": \"CS101\",\n    \"course_name\": \"Data Structures\",\n    \"department\": 1,\n    \"credits\": 4,\n    \"semester\": 3,\n    \"assigned_faculty\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/courses/",
+              "host": ["{{base_url}}"],
+              "path": ["courses", ""]
+            }
+          }
+        },
+        {
+          "name": "Get All Courses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/courses/",
+              "host": ["{{base_url}}"],
+              "path": ["courses", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Exams",
+      "item": [
+        {
+          "name": "Create Exam",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exam_name\": \"Mid Semester Exam\",\n    \"exam_type\": \"Internal\",\n    \"start_date\": \"2024-03-01\",\n    \"end_date\": \"2024-03-10\",\n    \"duration\": 180,\n    \"total_marks\": 100,\n    \"semester\": 3,\n    \"department\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/exams/",
+              "host": ["{{base_url}}"],
+              "path": ["exams", ""]
+            }
+          }
+        },
+        {
+          "name": "Get All Exams",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/exams/",
+              "host": ["{{base_url}}"],
+              "path": ["exams", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Exam Schedules",
+      "item": [
+        {
+          "name": "Create Exam Schedule",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exam\": 1,\n    \"subject\": 1,\n    \"date\": \"2024-03-01\",\n    \"start_time\": \"09:00:00\",\n    \"end_time\": \"12:00:00\",\n    \"hall_number\": \"Hall-A101\",\n    \"invigilator\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/exam-schedules/",
+              "host": ["{{base_url}}"],
+              "path": ["exam-schedules", ""]
+            }
+          }
+        },
+        {
+          "name": "Get All Exam Schedules",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/exam-schedules/",
+              "host": ["{{base_url}}"],
+              "path": ["exam-schedules", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Hall Tickets",
+      "item": [
+        {
+          "name": "Create Hall Ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"student\": 1,\n    \"exam\": 1,\n    \"hall_ticket_number\": \"HT2024001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/hall-tickets/",
+              "host": ["{{base_url}}"],
+              "path": ["hall-tickets", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Hall Tickets by Student",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/hall-tickets/student/1/",
+              "host": ["{{base_url}}"],
+              "path": ["hall-tickets", "student", "1", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Marks Entry",
+      "item": [
+        {
+          "name": "Create Marks Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"student\": 1,\n    \"subject\": 1,\n    \"exam\": 1,\n    \"internal_marks\": 25,\n    \"external_marks\": 70,\n    \"remarks\": \"Good performance\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/marks/",
+              "host": ["{{base_url}}"],
+              "path": ["marks", ""]
+            }
+          }
+        },
+        {
+          "name": "Get All Marks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/marks/",
+              "host": ["{{base_url}}"],
+              "path": ["marks", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Results",
+      "item": [
+        {
+          "name": "Create Result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"student\": 1,\n    \"exam\": 1,\n    \"total_marks\": 450,\n    \"percentage\": 90.00,\n    \"cgpa\": 9.5,\n    \"result_status\": \"Pass\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/results/",
+              "host": ["{{base_url}}"],
+              "path": ["results", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Results by Student",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/results/student/1/",
+              "host": ["{{base_url}}"],
+              "path": ["results", "student", "1", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "12. Notifications",
+      "item": [
+        {
+          "name": "Create Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Exam Schedule Released\",\n    \"message\": \"Mid semester exam schedule has been released. Please check your hall tickets.\",\n    \"target_role\": \"Student\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/notifications/",
+              "host": ["{{base_url}}"],
+              "path": ["notifications", ""]
+            }
+          }
+        },
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/notifications/",
+              "host": ["{{base_url}}"],
+              "path": ["notifications", ""]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
