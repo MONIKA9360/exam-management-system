@@ -69,6 +69,14 @@ def login_view(request):
     serializer = LoginSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.validated_data['user']
+        
+        # Only allow Admin role to login
+        if user.role != 'Admin':
+            return Response({
+                'message': 'Access denied. Only Admin users can login.',
+                'errors': {'role': ['Only Admin users are allowed to access this system.']}
+            }, status=status.HTTP_403_FORBIDDEN)
+        
         refresh = RefreshToken.for_user(user)
         
         create_audit_log(user, 'LOGIN', 'User', user.id, None, get_client_ip(request))
