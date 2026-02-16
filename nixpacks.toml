@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ['python312', 'gcc', 'mysql80']
+
+[phases.install]
+cmds = ['cd backend/Exam_management && pip install -r requirements.txt']
+
+[phases.build]
+cmds = ['cd backend/Exam_management && python manage.py collectstatic --noinput']
+
+[start]
+cmd = 'cd backend/Exam_management && python manage.py migrate && gunicorn Exam_management.wsgi:application --bind 0.0.0.0:$PORT'
