@@ -113,13 +113,18 @@ const Marks = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>Marks Entry</h1>
-        <button className="btn-primary" onClick={() => {
-          setShowModal(true);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}>
-          + Add Marks
-        </button>
+        <div className="page-header-left">
+          <button className="btn-back" onClick={() => window.history.back()}>← Back</button>
+          <h1>Marks Entry</h1>
+        </div>
+        <div className="page-header-right">
+          <button className="btn-primary" onClick={() => {
+            setShowModal(true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}>
+            + Add Marks
+          </button>
+        </div>
       </div>
 
       {!showModal && (

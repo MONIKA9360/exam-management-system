@@ -103,14 +103,18 @@ function Courses() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <button onClick={() => navigate('/dashboard')}>← Back</button>
-        <h1>Courses</h1>
-        <button onClick={() => {
-          setShowForm(!showForm);
-          if (!showForm) window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}>
-          {showForm ? 'Cancel' : '+ Add Course'}
-        </button>
+        <div className="page-header-left">
+          <button className="btn-back" onClick={() => navigate('/dashboard')}>← Back</button>
+          <h1>Courses</h1>
+        </div>
+        <div className="page-header-right">
+          <button onClick={() => {
+            setShowForm(!showForm);
+            if (!showForm) window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}>
+            {showForm ? 'Cancel' : '+ Add Course'}
+          </button>
+        </div>
       </div>
 
       {showForm && (

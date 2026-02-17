@@ -89,17 +89,17 @@ function Departments() {
 
       <div className="page-header">
         <div className="page-header-left">
+          <button className="btn-back" onClick={() => navigate('/dashboard')}>
+            ← Back
+          </button>
+          <h1>Departments</h1>
+        </div>
+        <div className="page-header-right">
           <button onClick={() => {
             setShowForm(!showForm);
             if (!showForm) window.scrollTo({ top: 0, behavior: 'smooth' });
           }}>
             {showForm ? 'Cancel' : '+ Add Department'}
-          </button>
-          <h1>Departments</h1>
-        </div>
-        <div className="page-header-right">
-          <button className="btn-back" onClick={() => navigate('/dashboard')}>
-            ← Back
           </button>
         </div>
       </div>

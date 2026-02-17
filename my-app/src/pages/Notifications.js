@@ -74,13 +74,18 @@ const Notifications = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>Notifications</h1>
-        <button className="btn-primary" onClick={() => {
-          setShowModal(true);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}>
-          + Create Notification
-        </button>
+        <div className="page-header-left">
+          <button className="btn-back" onClick={() => window.history.back()}>← Back</button>
+          <h1>Notifications</h1>
+        </div>
+        <div className="page-header-right">
+          <button className="btn-primary" onClick={() => {
+            setShowModal(true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}>
+            + Create Notification
+          </button>
+        </div>
       </div>
 
       {!showModal && (

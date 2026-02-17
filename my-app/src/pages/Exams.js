@@ -110,17 +110,17 @@ const Exams = () => {
 
       <div className="page-header">
         <div className="page-header-left">
+          <button className="btn-back" onClick={() => window.history.back()}>
+            ← Back
+          </button>
+          <h1>Exams Management</h1>
+        </div>
+        <div className="page-header-right">
           <button className="btn-primary" onClick={() => {
             setShowModal(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}>
             + Add Exam
-          </button>
-          <h1>Exams Management</h1>
-        </div>
-        <div className="page-header-right">
-          <button className="btn-back" onClick={() => window.history.back()}>
-            ← Back
           </button>
         </div>
       </div>
