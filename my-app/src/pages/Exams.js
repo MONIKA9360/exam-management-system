@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
+import Toast from '../components/Toast';
 import './Common.css';
 
 const Exams = () => {
@@ -7,6 +8,7 @@ const Exams = () => {
   const [departments, setDepartments] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [toast, setToast] = useState(null);
   const [currentExam, setCurrentExam] = useState({
     exam_name: '',
     exam_type: 'Internal',
@@ -46,15 +48,19 @@ const Exams = () => {
     try {
       if (editMode) {
         await axios.put(`/exams/${currentExam.id}/`, currentExam);
-        alert('Exam updated successfully!');
+        setToast({ message: 'Exam updated successfully!', type: 'success' });
       } else {
         await axios.post('/exams/', currentExam);
-        alert('Exam created successfully!');
+        setToast({ message: 'Exam added successfully!', type: 'success' });
       }
       fetchExams();
       handleCloseModal();
     } catch (error) {
-      alert('Error: ' + (error.response?.data?.detail || 'Something went wrong'));
+      if (error.response?.status === 400) {
+        setToast({ message: 'Exam already exists or invalid data!', type: 'warning' });
+      } else {
+        setToast({ message: 'Error: ' + (error.response?.data?.detail || 'Something went wrong'), type: 'error' });
+      }
     }
   };
 
@@ -69,10 +75,10 @@ const Exams = () => {
     if (window.confirm('Are you sure you want to delete this exam?')) {
       try {
         await axios.delete(`/exams/${id}/`);
-        alert('Exam deleted successfully!');
+        setToast({ message: 'Exam deleted successfully!', type: 'success' });
         fetchExams();
       } catch (error) {
-        alert('Error deleting exam');
+        setToast({ message: 'Error deleting exam', type: 'error' });
       }
     }
   };
@@ -94,14 +100,29 @@ const Exams = () => {
 
   return (
     <div className="page-container">
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
+
       <div className="page-header">
-        <h1>Exams Management</h1>
-        <button className="btn-primary" onClick={() => {
-          setShowModal(true);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}>
-          + Add Exam
-        </button>
+        <div className="page-header-left">
+          <button className="btn-primary" onClick={() => {
+            setShowModal(true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}>
+            + Add Exam
+          </button>
+          <h1>Exams Management</h1>
+        </div>
+        <div className="page-header-right">
+          <button className="btn-back" onClick={() => window.history.back()}>
+            ← Back
+          </button>
+        </div>
       </div>
 
       {!showModal && (

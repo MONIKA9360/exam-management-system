@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api/axios';
-import Breadcrumb from '../components/Breadcrumb';
 import Toast from '../components/Toast';
 import './Common.css';
 
@@ -88,20 +87,21 @@ function Departments() {
         />
       )}
 
-      <Breadcrumb items={[
-        { label: 'Dashboard', path: '/dashboard' },
-        { label: 'Departments' }
-      ]} />
-
       <div className="page-header">
-        <button onClick={() => navigate('/dashboard')}>← Back</button>
-        <h1>Departments</h1>
-        <button onClick={() => {
-          setShowForm(!showForm);
-          if (!showForm) window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}>
-          {showForm ? 'Cancel' : '+ Add Department'}
-        </button>
+        <div className="page-header-left">
+          <button onClick={() => {
+            setShowForm(!showForm);
+            if (!showForm) window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}>
+            {showForm ? 'Cancel' : '+ Add Department'}
+          </button>
+          <h1>Departments</h1>
+        </div>
+        <div className="page-header-right">
+          <button className="btn-back" onClick={() => navigate('/dashboard')}>
+            ← Back
+          </button>
+        </div>
       </div>
 
       {showForm && (

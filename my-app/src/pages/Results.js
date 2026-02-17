@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
-import Breadcrumb from '../components/Breadcrumb';
 import Toast from '../components/Toast';
 import './Common.css';
 
@@ -173,19 +172,21 @@ const Results = () => {
         />
       )}
 
-      <Breadcrumb items={[
-        { label: 'Dashboard', path: '/dashboard' },
-        { label: 'Results' }
-      ]} />
-
       <div className="page-header">
-        <h1>Results</h1>
-        <button className="btn-primary" onClick={() => {
-          setShowModal(true);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}>
-          + Add Result
-        </button>
+        <div className="page-header-left">
+          <button className="btn-primary" onClick={() => {
+            setShowModal(true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}>
+            + Add Result
+          </button>
+          <h1>Results</h1>
+        </div>
+        <div className="page-header-right">
+          <button className="btn-back" onClick={() => window.history.back()}>
+            ← Back
+          </button>
+        </div>
       </div>
 
       {!showModal && (
