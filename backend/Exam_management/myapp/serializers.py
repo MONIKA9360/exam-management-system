@@ -130,16 +130,10 @@ class ExamSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Exam
-        fields = ['id', 'exam_name', 'exam_type', 'start_date', 'end_date', 
+        fields = ['id', 'exam_name', 'exam_type', 'exam_date', 
                   'duration', 'total_marks', 'semester', 'department', 
                   'department_name', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
-    
-    def validate(self, data):
-        if data.get('end_date') and data.get('start_date'):
-            if data['end_date'] < data['start_date']:
-                raise serializers.ValidationError('End date must be after start date')
-        return data
 
 # 8. Exam Schedule Serializer
 class ExamScheduleSerializer(serializers.ModelSerializer):
@@ -178,14 +172,15 @@ class ExamScheduleSerializer(serializers.ModelSerializer):
 # 9. Hall Ticket Serializer
 class HallTicketSerializer(serializers.ModelSerializer):
     student_name = serializers.CharField(source='student.full_name', read_only=True)
-    student_register_no = serializers.CharField(source='student.register_no', read_only=True)
+    register_no = serializers.CharField(source='student.register_no', read_only=True)
     exam_name = serializers.CharField(source='exam.exam_name', read_only=True)
+    department_name = serializers.CharField(source='student.department.department_name', read_only=True)
     
     class Meta:
         model = HallTicket
-        fields = ['id', 'student', 'student_name', 'student_register_no', 
+        fields = ['id', 'student', 'student_name', 'register_no', 
                   'exam', 'exam_name', 'hall_ticket_number', 'issued_date', 
-                  'qr_code', 'photo_url', 'created_at']
+                  'qr_code', 'photo_url', 'department_name', 'created_at']
         read_only_fields = ['id', 'issued_date', 'qr_code', 'created_at']
 
 # 10. Marks Entry Serializer

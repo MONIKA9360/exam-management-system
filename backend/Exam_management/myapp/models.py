@@ -143,8 +143,7 @@ class Exam(BaseModel):
     
     exam_name = models.CharField(max_length=200)
     exam_type = models.CharField(max_length=20, choices=EXAM_TYPE_CHOICES)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    exam_date = models.DateField()
     duration = models.IntegerField(help_text='Duration in minutes')
     total_marks = models.IntegerField()
     semester = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(8)])
@@ -152,7 +151,7 @@ class Exam(BaseModel):
     
     class Meta:
         db_table = 'exams'
-        ordering = ['-start_date']
+        ordering = ['-exam_date']
     
     def __str__(self):
         return f"{self.exam_name} - {self.exam_type}"

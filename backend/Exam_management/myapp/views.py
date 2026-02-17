@@ -135,8 +135,8 @@ def dashboard_view(request):
     # Upcoming exams (next 30 days)
     today = datetime.now().date()
     upcoming_exams = Exam.objects.filter(
-        start_date__gte=today,
-        start_date__lte=today + timedelta(days=30),
+        exam_date__gte=today,
+        exam_date__lte=today + timedelta(days=30),
         is_deleted=False
     ).count()
     
@@ -483,7 +483,7 @@ class HallTicketViewSet(viewsets.ModelViewSet):
     serializer_class = HallTicketSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['student', 'exam']
+    filterset_fields = ['student', 'exam', 'hall_ticket_number']
     search_fields = ['hall_ticket_number']
     
     @action(detail=False, methods=['get'], url_path='student/(?P<student_id>[^/.]+)')

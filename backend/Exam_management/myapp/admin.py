@@ -58,10 +58,10 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Exam)
 class ExamAdmin(admin.ModelAdmin):
-    list_display = ['exam_name', 'exam_type', 'start_date', 'end_date', 'semester', 'department']
+    list_display = ['exam_name', 'exam_type', 'exam_date', 'semester', 'department']
     list_filter = ['exam_type', 'semester', 'department', 'is_deleted']
     search_fields = ['exam_name']
-    ordering = ['-start_date']
+    ordering = ['-exam_date']
 
 @admin.register(ExamSchedule)
 class ExamScheduleAdmin(admin.ModelAdmin):
