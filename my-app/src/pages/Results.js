@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
+import Breadcrumb from '../components/Breadcrumb';
+import Toast from '../components/Toast';
 import './Common.css';
 
 const Results = () => {
@@ -10,6 +12,7 @@ const Results = () => {
   const [departments, setDepartments] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [toast, setToast] = useState(null);
   const [filters, setFilters] = useState({
     semester: '',
     status: '',
@@ -112,15 +115,31 @@ const Results = () => {
     try {
       if (editMode) {
         await axios.put(`/results/${currentResult.id}/`, currentResult);
-        alert('Result updated successfully!');
+        setToast({ message: 'Result updated successfully!', type: 'success' });
       } else {
         await axios.post('/results/', currentResult);
-        alert('Result created successfully!');
+        setToast({ message: 'Result added successfully!', type: 'success' });
       }
       fetchResults();
       handleCloseModal();
     } catch (error) {
-      alert('Error: ' + (error.response?.data?.detail || 'Something went wrong'));
+      console.error('Error details:', error.response?.data);
+      
+      // Check for duplicate entry
+      if (error.response?.status === 400) {
+        const errorData = error.response?.data;
+        if (errorData?.non_field_errors || 
+            (typeof errorData === 'object' && JSON.stringify(errorData).includes('already exists'))) {
+          setToast({ message: 'Result already exists for this student and exam!', type: 'warning' });
+        } else {
+          const errorMsg = errorData?.detail || 
+                         errorData?.message ||
+                         'Invalid data. Please check all fields.';
+          setToast({ message: errorMsg, type: 'error' });
+        }
+      } else {
+        setToast({ message: 'Something went wrong. Please try again.', type: 'error' });
+      }
     }
   };
 
@@ -146,6 +165,19 @@ const Results = () => {
 
   return (
     <div className="page-container">
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
+
+      <Breadcrumb items={[
+        { label: 'Dashboard', path: '/dashboard' },
+        { label: 'Results' }
+      ]} />
+
       <div className="page-header">
         <h1>Results</h1>
         <button className="btn-primary" onClick={() => {

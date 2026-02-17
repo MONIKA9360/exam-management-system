@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api/axios';
+import Breadcrumb from '../components/Breadcrumb';
+import Toast from '../components/Toast';
 import './Common.css';
 
 function Departments() {
   const [departments, setDepartments] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [toast, setToast] = useState(null);
   const [formData, setFormData] = useState({
     department_name: '',
     department_code: '',
@@ -33,15 +36,21 @@ function Departments() {
     try {
       if (editId) {
         await API.put(`/departments/${editId}/`, formData);
+        setToast({ message: 'Department updated successfully!', type: 'success' });
       } else {
         await API.post('/departments/', formData);
+        setToast({ message: 'Department added successfully!', type: 'success' });
       }
       setShowForm(false);
       setFormData({ department_name: '', department_code: '', hod: '', description: '' });
       setEditId(null);
       fetchDepartments();
     } catch (err) {
-      alert(err.response?.data?.message || 'Operation failed');
+      if (err.response?.status === 400) {
+        setToast({ message: 'Department already exists or invalid data!', type: 'warning' });
+      } else {
+        setToast({ message: err.response?.data?.message || 'Operation failed', type: 'error' });
+      }
     }
   };
 
@@ -61,15 +70,29 @@ function Departments() {
     if (window.confirm('Are you sure?')) {
       try {
         await API.delete(`/departments/${id}/`);
+        setToast({ message: 'Department deleted successfully!', type: 'success' });
         fetchDepartments();
       } catch (err) {
-        alert('Delete failed');
+        setToast({ message: 'Delete failed', type: 'error' });
       }
     }
   };
 
   return (
     <div className="page-container">
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
+
+      <Breadcrumb items={[
+        { label: 'Dashboard', path: '/dashboard' },
+        { label: 'Departments' }
+      ]} />
+
       <div className="page-header">
         <button onClick={() => navigate('/dashboard')}>← Back</button>
         <h1>Departments</h1>
