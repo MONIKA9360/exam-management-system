@@ -15,7 +15,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-*3sf%@s5a$pvg-u!wl9@f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.onrender.com',  # Allow all Render domains
+    '*'  # Remove this in production after setting up your domain
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -67,20 +72,32 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Exam_management.wsgi.application'
 
-# Database - Supabase PostgreSQL Configuration
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'postgres'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'Monikamuthusamy'),
-        'HOST': os.environ.get('DB_HOST', 'db.ebfnhtpfcerippubgkul.supabase.co'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
+# Database Configuration
+# Use PostgreSQL for production (Render + Supabase)
+# Use SQLite for local development
+if os.environ.get('RENDER'):
+    # Production database (Supabase PostgreSQL)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME', 'postgres'),
+            'USER': os.environ.get('DB_USER', 'postgres'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', 'Monikamuthusamy'),
+            'HOST': os.environ.get('DB_HOST', 'db.ebfnhtpfcerippubgkul.supabase.co'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+            'OPTIONS': {
+                'sslmode': 'require',
+            },
+        }
     }
-}
+else:
+    # Local development database (SQLite)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Custom User Model
 AUTH_USER_MODEL = 'myapp.User'
@@ -150,9 +167,15 @@ SIMPLE_JWT = {
 }
 
 # CORS Configuration
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only allow all origins in development
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    # Add your Render frontend URL here after deployment
+    # "https://your-frontend-app.onrender.com",
 ]
+
+# For production, you'll need to add your frontend URL to CORS_ALLOWED_ORIGINS
+if not DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True  # Temporary - update with specific domain after deployment

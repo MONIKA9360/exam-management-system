@@ -6,6 +6,7 @@ from django.db.models import Q, Count, Avg, Sum
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from datetime import datetime, timedelta
+from django.db import IntegrityError
 from .models import (
     User, Student, Staff, Department, Course, Exam,
     ExamSchedule, HallTicket, MarksEntry, Result,
@@ -27,6 +28,30 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+# Helper function to handle duplicate errors
+def get_duplicate_error_message(error, model_name):
+    error_str = str(error)
+    
+    # Common field mappings
+    field_messages = {
+        'student_id': 'Student ID already exists',
+        'register_no': 'Register Number already exists',
+        'email': 'Email already exists',
+        'phone': 'Phone number already exists',
+        'staff_id': 'Staff ID already exists',
+        'department_code': 'Department Code already exists',
+        'department_name': 'Department Name already exists',
+        'course_code': 'Course Code already exists',
+        'hall_ticket_number': 'Hall Ticket Number already exists',
+    }
+    
+    # Check which field caused the duplicate
+    for field, message in field_messages.items():
+        if field in error_str.lower():
+            return message
+    
+    return f'{model_name} already exists'
 
 # Helper function to create audit log
 def create_audit_log(user, action, model_name, object_id=None, changes=None, ip_address=None):
@@ -183,19 +208,26 @@ class StudentViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'full_name', 'register_no']
     
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            student = serializer.save()
-            create_audit_log(request.user, 'CREATE', 'Student', student.id, 
-                           str(request.data), get_client_ip(request))
+        try:
+            serializer = self.get_serializer(data=request.data)
+            if serializer.is_valid():
+                student = serializer.save()
+                create_audit_log(request.user, 'CREATE', 'Student', student.id, 
+                               str(request.data), get_client_ip(request))
+                return Response({
+                    'message': 'Student created successfully',
+                    'data': serializer.data
+                }, status=status.HTTP_201_CREATED)
             return Response({
-                'message': 'Student created successfully',
-                'data': serializer.data
-            }, status=status.HTTP_201_CREATED)
-        return Response({
-            'message': 'Student creation failed',
-            'errors': serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
+                'message': 'Validation failed',
+                'errors': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        except IntegrityError as e:
+            error_message = get_duplicate_error_message(e, 'Student')
+            return Response({
+                'message': error_message,
+                'errors': {'detail': error_message}
+            }, status=status.HTTP_400_BAD_REQUEST)
     
     def update(self, request, *args, **kwargs):
         instance = self.get_object()

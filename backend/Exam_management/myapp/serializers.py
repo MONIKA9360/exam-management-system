@@ -70,6 +70,16 @@ class DepartmentSerializer(serializers.ModelSerializer):
     
     def get_total_staff(self, obj):
         return obj.staff_members.filter(is_deleted=False).count()
+    
+    def validate_department_code(self, value):
+        if Department.objects.filter(department_code=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
+            raise serializers.ValidationError('Department Code already exists')
+        return value
+    
+    def validate_department_name(self, value):
+        if Department.objects.filter(department_name=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
+            raise serializers.ValidationError('Department Name already exists')
+        return value
 
 # 4. Staff Serializer
 class StaffSerializer(serializers.ModelSerializer):
@@ -81,9 +91,19 @@ class StaffSerializer(serializers.ModelSerializer):
                   'department_name', 'designation', 'qualification', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
     
+    def validate_staff_id(self, value):
+        if Staff.objects.filter(staff_id=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
+            raise serializers.ValidationError('Staff ID already exists')
+        return value
+    
     def validate_email(self, value):
         if Staff.objects.filter(email=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
-            raise serializers.ValidationError('Staff with this email already exists')
+            raise serializers.ValidationError('Email already exists')
+        return value
+    
+    def validate_phone(self, value):
+        if Staff.objects.filter(phone=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
+            raise serializers.ValidationError('Phone number already exists')
         return value
 
 # 3. Student Serializer
@@ -97,7 +117,25 @@ class StudentSerializer(serializers.ModelSerializer):
                   'address', 'status', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
     
+    def validate_student_id(self, value):
+        if Student.objects.filter(student_id=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
+            raise serializers.ValidationError('Student ID already exists')
+        return value
+    
+    def validate_register_no(self, value):
+        if Student.objects.filter(register_no=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
+            raise serializers.ValidationError('Register Number already exists')
+        return value
+    
     def validate_email(self, value):
+        if Student.objects.filter(email=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
+            raise serializers.ValidationError('Email already exists')
+        return value
+    
+    def validate_phone(self, value):
+        if Student.objects.filter(phone=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
+            raise serializers.ValidationError('Phone number already exists')
+        return value
         if Student.objects.filter(email=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
             raise serializers.ValidationError('Student with this email already exists')
         return value
@@ -121,7 +159,7 @@ class CourseSerializer(serializers.ModelSerializer):
     
     def validate_course_code(self, value):
         if Course.objects.filter(course_code=value, is_deleted=False).exclude(id=self.instance.id if self.instance else None).exists():
-            raise serializers.ValidationError('Course with this code already exists')
+            raise serializers.ValidationError('Course Code already exists')
         return value
 
 # 7. Exam Serializer
